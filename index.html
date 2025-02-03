@@ -139,6 +139,23 @@
       <pre><code>API_KEY: 2345324353CSADevolve_25</code></pre>
     </div>
 
+	 <!-- Generate OTP Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=generate-otp</h3>
+      <p>Generate a One-Time Password (OTP). No extra data is needed for generating an OTP just make a post to the endpoint.</p>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+{
+  "status": "success",
+  "otp": "123456"
+}
+        </code></pre>
+      </div>
+    </div>
+
     <!-- Send Email Endpoint -->
     <div class="endpoint">
       <div class="method post">POST</div>
@@ -244,23 +261,6 @@ axios.post(apiUrl, data, { headers })
 {
     "status": "success",
     "message": "Email sent successfully"
-}
-        </code></pre>
-      </div>
-    </div>
-
-    <!-- Generate OTP Endpoint -->
-    <div class="endpoint">
-      <div class="method post">POST</div>
-      <h3>?action=generate-otp</h3>
-      <p>Generate a One-Time Password (OTP). No extra data is needed for generating an OTP just make a post to the endpoint.</p>
-
-      <div class="response">
-        <h4>Response</h4>
-        <pre><code>
-{
-  "status": "success",
-  "otp": "123456"
 }
         </code></pre>
       </div>
