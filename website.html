@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <style>
+    /* Dark Theme Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #ff6f61;
+    }
+
+    a {
+      color: #4dabf7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background-color: #333;
+      color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    pre {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    .endpoint {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .endpoint h3 {
+      margin-top: 0;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .get {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .post {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .put {
+      background-color: #ff9800;
+      color: #fff;
+    }
+
+    .delete {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .parameters, .response {
+      margin-top: 15px;
+    }
+
+    .parameters table, .response table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .parameters th, .response th {
+      background-color: #333;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .parameters td, .response td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #2a2a2a;
+      color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>API Documentation</h1>
+    <p>Welcome to the API documentation for Evolve OTP generation system. Below you'll find details on how to interact with our API endpoints.
+	<br />NOTE: The SMS call may delay due to network issues or other factors. Also, please limit number of calls to the SMS endpoint (It has limited credit for testing).
+	</p>
+
+    <!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Authentication</h2>
+      <p>All requests must include a valid API key in the <code>API_KEY</code> header.</p>
+      <pre><code>API_KEY: 2345324353CSADevolve_25</code></pre>
+    </div>
+
+    <!-- Send Email Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=email-otp</h3>
+      <p>Send an email to a recipient.</p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>recipient</td>
+              <td>string</td>
+              <td>Email address of the recipient.</td>
+            </tr>
+            <tr>
+              <td>subject</td>
+              <td>string</td>
+              <td>Subject of the email.</td>
+            </tr>
+            <tr>
+              <td>body</td>
+              <td>string</td>
+              <td>Body content of the email (Must contain the OTP).</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Email data to be sent (PHP sample)
+$data = [
+    'recipient' => "user_email@gmail.com",
+    'subject'   => 'EVOLVE OTP',
+    'body'      => "Your OTP to send is 837462."
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	
+	<div class="response">
+        <h4>Sample Nodejs POST</h4>
+        <pre><code>
+const axios = require('axios');
+
+// API URL
+const apiUrl = 'http://localhost/consultcaresolutions/app/portal/email-api/public/?action=email-otp';
+
+// Email data to be sent
+const data = {
+    recipient: 'your_email@gmail.com',
+    subject: 'EVOLVE OTP',
+    body: 'Your OTP is 837462.' // Insert the generated OTP in the body.
+};
+
+// Headers including the API key
+const headers = {
+    'Content-Type': 'application/json',
+    'API-KEY': 'YOUR_API_KEY'
+};
+
+// Make a POST request using axios
+axios.post(apiUrl, data, { headers })
+    .then(response => {
+        // Check if the response is valid JSON
+        if (response.data) {
+            console.log(JSON.stringify(response.data, null, 2)); // Pretty-print the JSON response
+        } else {
+            console.error('Invalid JSON response from API');
+        }
+    })
+    .catch(error => {
+        // Handle errors
+        if (error.response) {
+            // The request was made and the server responded with a status code
+            console.error('Server responded with an error:', error.response.data);
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.error('No response received from the server:', error.request);
+        } else {
+            // Something happened in setting up the request
+            console.error('Error setting up the request:', error.message);
+        }
+    });
+        </code></pre>
+      </div>
+    </div>
+
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+{
+    "status": "success",
+    "message": "Email sent successfully"
+}
+        </code></pre>
+      </div>
+    </div>
+
+    <!-- Generate OTP Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=generate-otp</h3>
+      <p>Generate a One-Time Password (OTP). No extra data is needed for generating an OTP just make a post to the endpoint.</p>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+{
+  "status": "success",
+  "otp": "123456"
+}
+        </code></pre>
+      </div>
+    </div>
+
+    <!-- Send SMS OTP Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=sms-otp</h3>
+      <p>Send an OTP via SMS to a telephone number.</p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>otp</td>
+              <td>string</td>
+              <td>The OTP to send.</td>
+            </tr>
+            <tr>
+              <td>telephone</td>
+              <td>string</td>
+              <td>The recipient's telephone number.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+{
+    "status": "success",
+    "message": "OTP successfully sent via SMS."
+}
+        </code></pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>&copy; 2025 EVOLVE. All rights reserved.</p>
+  </div>
+</body>
+</html>
