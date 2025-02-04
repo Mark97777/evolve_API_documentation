@@ -136,7 +136,7 @@
     <div class="endpoint">
       <h2>Authentication</h2>
       <p>All requests must include a valid API key in the <code>API_KEY</code> header.</p>
-      <pre><code>API_KEY: 2345324353CSADevolve_25</code></pre>
+      <pre><code>API-KEY: 2345324353CSADevolve_25</code></pre>
     </div>
 
 	 <!-- Generate OTP Endpoint -->
@@ -148,9 +148,15 @@
       <div class="response">
         <h4>Response</h4>
         <pre><code>
+		SUCCESS RESPONSE
 {
   "status": "success",
   "otp": "123456"
+}
+		ERROR RESPONSE
+{
+  "status": "error",
+  "message": "Failed to generate OTP."
 }
         </code></pre>
       </div>
@@ -258,9 +264,15 @@ axios.post(apiUrl, data, { headers })
       <div class="response">
         <h4>Response</h4>
         <pre><code>
+		SUCCESS  RESPONSE
 {
     "status": "success",
-    "message": "Email sent successfully"
+    "message": "Email sent successfully."
+}
+		ERROR  RESPONSE
+{
+    "status": "error",
+    "message": "Email not sent."
 }
         </code></pre>
       </div>
