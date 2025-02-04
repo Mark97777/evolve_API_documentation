@@ -135,7 +135,7 @@
 	<!-- API Key Section -->
     <div class="endpoint">
       <h2>Authentication</h2>
-      <p>All requests must include a valid API key in the <code>API_KEY</code> header.</p>
+      <p>All requests must include a valid API key in the <code>API-KEY</code> header.</p>
       <pre><code>API-KEY: 2345324353CSADevolve_25</code></pre>
     </div>
 
@@ -312,9 +312,15 @@ axios.post(apiUrl, data, { headers })
       <div class="response">
         <h4>Response</h4>
         <pre><code>
+		SUCCESS  RESPOSNE
 {
     "status": "success",
     "message": "OTP successfully sent via SMS."
+}
+		ERROR  RESPOSNE
+{
+    "status": "error",
+    "message": "OTP not sent."
 }
         </code></pre>
       </div>
