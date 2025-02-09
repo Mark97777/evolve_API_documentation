@@ -143,7 +143,38 @@
     <div class="endpoint">
       <div class="method post">POST</div>
       <h3>?action=generate-otp</h3>
-      <p>Generate a One-Time Password (OTP). No extra data is needed for generating an OTP just make a post to the endpoint.</p>
+      <p>Generate a One-Time Password (OTP).</p>
+	  
+	  <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>email</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>recipient</td>
+              <td>string</td>
+              <td>Email address of the recipient.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Email data to be sent (PHP sample)
+$data = [
+    'recipient' => "user_email@gmail.com"
+];
+        </code></pre>
+      </div>
+    </div>
 
       <div class="response">
         <h4>Response</h4>
@@ -161,6 +192,70 @@
         </code></pre>
       </div>
     </div>
+	
+	
+	
+	<!-- Verify OTP Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=verify-otp</h3>
+      <p>This endpoint verifies the generated OTP. The endpoint requires the <b>email</b> and <b>generated OTP</b> so it can verify it. Generated OTP expires after 5 minutes.</p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+			<tr>
+			  <td>email</td>
+			  <td>string</td>
+			  <td>The recipient's email used to generate the OTP previously.</td>
+			</tr>
+            <tr>
+              <td>otp</td>
+              <td>string</td>
+              <td>The generated OTP to verify.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+	  
+	  <div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Request data
+$data = [
+    'email' => "user_email@gmail.com", // the email used to request the OTP
+    'otp'      => "generated_OTP_here" // The generated OTP associated with the email
+];
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": "success",
+    "message": "OTP verified successfully."
+}
+		ERROR  RESPOSNE
+{
+    "status": "error",
+    "message": "OTP has expired."
+}
+        </code></pre>
+      </div>
+    </div>
+	
+	
 
     <!-- Send Email Endpoint -->
     <div class="endpoint">
