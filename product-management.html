@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <style>
+    /* Dark Theme Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #ff6f61;
+    }
+
+    a {
+      color: #4dabf7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background-color: #333;
+      color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    pre {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    .endpoint {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .endpoint h3 {
+      margin-top: 0;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .get {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .post {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .put {
+      background-color: #ff9800;
+      color: #fff;
+    }
+
+    .delete {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .parameters, .response {
+      margin-top: 15px;
+    }
+
+    .parameters table, .response table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .parameters th, .response th {
+      background-color: #333;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .parameters td, .response td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #2a2a2a;
+      color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Product Management Documentation</h1>
+    <p>Welcome to the Product Management API documentation for Evolve.
+	</p>
+	
+	<!-- Momo Procedure Section -->
+    <div class="endpoint">
+      <h2>Points to note</h2>
+      <ol>
+		<li>Only signed in users can add products.</li>
+		<li>Only adding a product, has it own base URL and doesnt require API-Key.</li>
+		<li>A product photo is required when adding a new product (at least 1).</li>
+		<li>Product photos are optional during updating.</li>
+		<li>Input field for product photo should have key / name value of <b>images</b>.(very important for image upload to work.)</li>
+      </ol>
+	  <p></p>
+    </div>
+
+    <!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point (except adding a product)</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point for only adding a product</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/index_.php</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Authentication</h2>
+      <p>All requests must include a valid API key in the <code>API-KEY</code> header.</p>
+      <pre><code>API-KEY: </code></pre>
+    </div>
+	<!-- Add Product Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=add-productWithPhotos</h3>
+      <p>The add product form must make a post request to this endpoint.
+	  <br /><b>Note:</b> This endpoint support multiple and single product image uploads.
+	  </p>
+	  
+	  <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Product name</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>Price</td>
+              <td>string / int</td>
+            </tr>
+			<tr>
+              <td>Quantity</td>
+              <td>string / int</td>
+            </tr>
+			<tr>
+              <td>Description</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>images</td>
+              <td>media</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div style = "" class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+Must be in forms with all the required input fields
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS RESPONSE
+//product successfully added
+{
+  "success": true,
+  "message": "Product and images added successfully",
+  "product_id": "42",
+  "images": [
+    "uploads/4_6812c10adb097.jpg"
+  ]
+}
+		ERROR RESPONSE
+{"success": false, "error": "Failed to add product."}
+{"error":"At least one image is required."}
+
+        </code></pre>
+      </div>
+    </div>
+	
+	
+	
+	<!-- Update Product Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=edit-product</h3>
+      <p>This endpoint will update the product information.
+	  <br /><b>NOTE</b>: Updating any product information is optional.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Product name</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>Price</td>
+              <td>string / int</td>
+            </tr>
+			<tr>
+              <td>Quantity</td>
+              <td>string / int</td>
+            </tr>
+			<tr>
+              <td>Description</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>images</td>
+              <td>media</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+	  
+	  <div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+Form Data of product
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "Product updated successfully",
+        "product_id": "41",
+        "images": []
+    }
+}
+		ERROR  RESPOSNE
+{
+    "status": 400,
+    "response": {
+        "success": false,
+        "error": "Product not found or you don't have permission to update it."
+    }
+}
+        </code></pre>
+      </div>
+    </div>
+	
+	
+
+    <!-- Get Product Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-products</h3>
+      <p>Use this endpoint to get or retreive a sellers product.
+	  <br /><b>Note</b>: Always make a post request with the seller's ID.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+              <td>The seller's unique ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$productData = [
+    "user_id" => "Dynamic_user_id"
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "Products retrieved successfully",
+        "data": [
+            {
+                "id": 42,
+                "user_id": 4,
+                "name": "Stove",
+                "price": 3000,
+                "quantity": 800,
+                "description": "Sample description for stove",
+                "created_at": "2025-05-01 02:32:10",
+                "images": [
+                    "uploads\/4_6812c10adb097.jpg"
+                ]
+            },
+            {
+                "id": 41,
+                "user_id": 4,
+                "name": "Iphone",
+                "price": 8000,
+                "quantity": 400,
+                "description": "Sample Iphone",
+                "created_at": "2025-05-01 00:28:09",
+                "images": [
+                    "uploads\/4_6812a3f95b1ef.png",
+                    "uploads\/4_6812a3f95b815.jpg"
+                ]
+            }
+        ]
+    }
+}
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "No products found for this user.",
+        "data": []
+    }
+}
+
+{
+    "status": 400,
+    "response": {
+        "error": "An error occured."
+    }
+}
+        </code></pre>
+      </div>
+	  
+	  
+	  <!-- Delete Product Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=delete-product</h3>
+      <p>Use this endpoint to delete a seller's product.
+	  <br /><b>Note</b>: Always make a post request with the seller's ID and product ID.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+              <td>The seller's unique ID.</td>
+            </tr>
+			<tr>
+              <td>product_id</td>
+              <td>string / int</td>
+              <td>The product's unique ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$productData = [
+    "product_id" => "42",
+    "user_id" => "4"
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "Product and associated images deleted successfully",
+        "product_id": "42"
+    }
+}
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 200,
+    "response": {
+        "success": false,
+        "error": "Product not found or already deleted."
+    }
+}
+
+{
+    "status": 400,
+    "response": {
+        "error": "An error occured."
+    }
+}
+        </code></pre>
+      </div>
+	
+
+  <div class="footer">
+    <p>&copy; 2025 EVOLVE. All rights reserved.</p>
+  </div>
+</body>
+</html>
