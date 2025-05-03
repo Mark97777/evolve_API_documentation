@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <style>
+    /* Dark Theme Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #ff6f61;
+    }
+
+    a {
+      color: #4dabf7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background-color: #333;
+      color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    pre {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    .endpoint {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .endpoint h3 {
+      margin-top: 0;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .get {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .post {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .put {
+      background-color: #ff9800;
+      color: #fff;
+    }
+
+    .delete {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .parameters, .response {
+      margin-top: 15px;
+    }
+
+    .parameters table, .response table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .parameters th, .response th {
+      background-color: #333;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .parameters td, .response td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #2a2a2a;
+      color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Order Management Documentation</h1>
+    <p>Welcome to the Order Management API documentation for Evolve.
+	</p>
+	
+	<!-- Momo Procedure Section -->
+    <div class="endpoint">
+      <h2>Points to note</h2>
+      <ol>
+		<li>The seller / user must be signin to access the order system / feature.</li>
+		<li>When an order is deleted, it related order items are deleted too.</li>
+		<li>After a successful payment, call the update payment endpoint and update payment status to "paid".</li>
+      </ol>
+	  <p></p>
+    </div>
+
+    <!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Authentication</h2>
+      <p>All requests must include a valid API key in the <code>API-KEY</code> header.</p>
+      <pre><code>API-KEY: </code></pre>
+    </div>
+	<!-- Add Product Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=create-order</h3>
+      <p>The create-order endpoint helps to create an order.
+	  <br /><b>Note:</b> This endpoint requires the user_id.
+	  </p>
+	  
+	  <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>customer_name</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>customer_contact</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>customer_location</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>delivery_date</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>payment_status</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>items</td>
+              <td>array containing (products_id,product_name,price & quantity)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div style = "" class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Test Create Order Endpoint
+$orderData = [
+    "user_id" => "5",
+    "customer_name" => "John Doe",
+    "customer_contact" => "john@example.com",
+    "customer_location" => "123 Main Street, New York",
+	"delivery_date" => "5/26/2025",
+	"payment_status" => "pending",
+    "items" => [
+        [
+            "product_id" => 5,
+            "product_name" => "Spray",
+            "price" => 12.00,
+            "quantity" => 1
+        ],
+        [
+            "product_id" => 6,
+            "product_name" => "Milo",
+            "price" => 10.99,
+            "quantity" => 1
+        ]
+    ]
+];
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS RESPONSE
+//order successfully added
+{
+    "status": 201,
+    "response": {
+        "success": true,
+        "message": "Order created successfully",
+        "order_id": "2",
+        "total_amount": "22.99"
+    }
+}
+
+		ERROR RESPONSE
+{
+    "status": 400,
+    "response": {
+        "error": "Customer details and at least one order item are required."
+    }
+}
+
+        </code></pre>
+      </div>
+    </div>
+	
+	
+	
+	<!-- Update Order Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=update-order</h3>
+      <p>This endpoint will update the order details.
+	  <br /><b>NOTE</b>: It requires the order_id.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>order_id</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>customer_name</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>customer_contact</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>customer_location</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>delivery_date</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>payment_status</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>items</td>
+              <td>array containing (products_id,product_name,price & quantity)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+	  
+	  <div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+$updateOrderData = [
+    "order_id" => "5",
+    "customer_name" => "John Doe",
+    "customer_contact" => "john@example.com",
+    "customer_location" => "123 Main Street, New York",
+	"delivery_date" => "5/26/2025",
+	"payment_status" => "paid",
+    "items" => [
+        [
+            "product_id" => 5,
+            "product_name" => "Spray",
+            "price" => 12.00,
+            "quantity" => 1
+        ],
+        [
+            "product_id" => 6,
+            "product_name" => "Milo",
+            "price" => 11.00,
+            "quantity" => 1
+        ]
+    ]
+];
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "Order updated successfully",
+        "order_id": "2",
+        "changes_made": true
+    }
+}
+
+		ERROR  RESPOSNE
+{
+    "status": 400,
+    "response": {
+        "success": false,
+        "error": "Order not found with ID: 1",
+        "order_id": "1"
+    }
+}
+        </code></pre>
+      </div>
+    </div>
+	
+	
+
+    <!-- Get Order Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-orders-with-items</h3>
+      <p>Use this endpoint to get or retrieve a seller's orders.
+	  <br /><b>Note</b>: Always make a post request with the seller's ID (user_id).
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+              <td>The seller's unique ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$requestData = [
+    "user_id" => "Dynamic_user_id"
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": [
+            {
+                "id": "2",
+                "user_id": 4,
+                "customer_name": "John Doe",
+                "customer_contact": "john@example.com",
+                "customer_location": "123 Main Street, New York",
+                "order_date": "2025-05-03 01:02:11",
+                "delivery_date": "5\/26\/2025",
+                "total_amount": "22.99",
+                "payment_status": "pending",
+                "created_at": "2025-05-02 16:02:11",
+                "updated_at": "2025-05-02 16:02:11",
+                "item_ids": "6,5",
+                "product_names": "Milo,Spray",
+                "quantities": "1,1",
+                "items": [
+                    {
+                        "id": 5,
+                        "order_id": 2,
+                        "product_id": 5,
+                        "product_name": "Spray",
+                        "price": "12.00",
+                        "quantity": 1,
+                        "created_at": "2025-05-02 16:02:11"
+                    },
+                    {
+                        "id": 6,
+                        "order_id": 2,
+                        "product_id": 6,
+                        "product_name": "Milo",
+                        "price": "10.99",
+                        "quantity": 1,
+                        "created_at": "2025-05-02 16:02:11"
+                    }
+                ]
+            }
+        ],
+        "count": 1
+    }
+}
+
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": [],
+        "count": 0
+    }
+}
+        </code></pre>
+      </div>
+	  
+	  
+	  <!-- Delete Order Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=delete-order</h3>
+      <p>Use this endpoint to delete a seller's order.
+	  <br /><b>Note</b>: Always make a post request with order_id.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>order_id</td>
+              <td>string / int</td>
+              <td>The order's unique ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$deleteData = [
+    "order_id" => "dynamic_order_id"
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "Order deleted successfully",
+        "order_id": "2"
+    }
+}
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 400,
+    "response": {
+        "success": false,
+        "error": "No order found with ID: 4"
+    }
+}
+        </code></pre>
+      </div>
+	  
+	  
+	 <!-- Update Payment status Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=update-payment-status</h3>
+      <p>Use this endpoint to update the payment status for the order.
+	  <br /><b>Note</b>: This endpoint requires order_id.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>order_id</td>
+              <td>string / int</td>
+              <td>The order's unique ID.</td>
+            </tr>
+			<tr>
+              <td>status</td>
+              <td>string</td>
+              <td>pending, paid , failed</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Test Update Payment Status Endpoint
+$paymentData = [
+    "order_id" => 7,               // Required: The order ID to update
+    "status" => "paid",              // Required: New status (pending/paid/failed/refunded)
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "request": {
+        "order_id": 6,
+        "status": "paid"
+    },
+    "response": {
+        "status": 200,
+        "response": {
+            "success": true,
+            "message": "Payment status updated successfully",
+            "order_id": "6",
+            "new_status": "paid"
+        }
+    }
+}
+
+		FAIELD  RESPOSNE
+
+{
+    "request": {
+        "order_id": 7,
+        "status": "paid"
+    },
+    "response": {
+        "status": 400,
+        "response": {
+            "success": false,
+            "error": "Order not found with ID: 7"
+        }
+    }
+}
+        </code></pre>
+      </div>
+	
+
+  <div class="footer">
+    <p>&copy; 2025 EVOLVE. All rights reserved.</p>
+  </div>
+</body>
+</html>
