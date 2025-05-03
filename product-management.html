@@ -307,6 +307,82 @@ Form Data of product
     </div>
 	
 	
+	<!-- Get Product Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-product</h3>
+      <p>Use this endpoint to get or retreive a single product.
+	  <br /><b>Note</b>: Always make a post request with the product ID.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>product_id</td>
+              <td>string / int</td>
+              <td>The product's unique ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$productData = [
+    "product_id" => "Dynamic_product_id"
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "Product retrieved successfully",
+        "data": {
+            "id": 41,
+            "user_id": 4,
+            "name": "Iphone",
+            "price": 10001,
+            "quantity": 701,
+            "description": "Iphone has long battery life.",
+            "created_at": "2025-04-30 20:58:25",
+            "images": [
+                "uploads\/4_6812f161c85b3.png",
+                "uploads\/4_6812f161c938f.jpg"
+            ]
+        }
+    }
+}
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 404,
+    "response": {
+        "success": false,
+        "error": "Product not found with ID: 4"
+    }
+}
+        </code></pre>
+      </div>
+	
 
     <!-- Get Product Endpoint -->
     <div class="endpoint">
