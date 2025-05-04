@@ -365,6 +365,109 @@ $updateOrderData = [
     </div>
 	
 	
+	
+	
+	<!-- Get Order Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-order</h3>
+      <p>Use this endpoint to get or retrieve a single order.
+	  <br /><b>Note</b>: Always make a post request with the order ID.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>order_id</td>
+              <td>string / int</td>
+              <td>Order unique ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$requestData = [
+    "order_id" => "Dynamic_order_id"
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "Order retrieved successfully",
+        "data": {
+            "id": 4,
+            "user_id": 5,
+            "customer_name": "John Doe",
+            "customer_contact": "john@example.com",
+            "customer_location": "123 Main Street, New York",
+            "order_date": "2025-05-04 01:42:24",
+            "delivery_date": "5\/26\/2025",
+            "total_amount": "22.99",
+            "payment_status": "pending",
+            "created_at": "2025-05-03 16:42:24",
+            "updated_at": "2025-05-03 16:42:24",
+            "items": [
+                {
+                    "id": 3,
+                    "order_id": 4,
+                    "product_id": 5,
+                    "product_name": "Spray",
+                    "price": "12.00",
+                    "quantity": 1,
+                    "created_at": "2025-05-03 16:42:24"
+                },
+                {
+                    "id": 4,
+                    "order_id": 4,
+                    "product_id": 6,
+                    "product_name": "Milo",
+                    "price": "10.99",
+                    "quantity": 1,
+                    "created_at": "2025-05-03 16:42:24"
+                }
+            ]
+        }
+    }
+}
+
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 404,
+    "response": {
+        "success": false,
+        "error": "Order not found."
+    }
+}
+        </code></pre>
+      </div>
+	
+	
+	
+	
+	
 
     <!-- Get Order Endpoint -->
     <div class="endpoint">
