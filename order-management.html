@@ -131,6 +131,7 @@
 		<li>The seller / user must be signin to access the order system / feature.</li>
 		<li>When an order is deleted, it related order items are deleted too.</li>
 		<li>After a successful payment, call the update payment endpoint and update payment status to "paid".</li>
+		<li>Order requires the product ID and details, if the product added to the order doesn't exist in the seller's products, the system will throw an error.</li>
       </ol>
 	  <p></p>
     </div>
@@ -153,7 +154,7 @@
       <div class="method post">POST</div>
       <h3>?action=create-order</h3>
       <p>The create-order endpoint helps to create an order.
-	  <br /><b>Note:</b> This endpoint requires the user_id.
+	  <br /><b>Note:</b> This endpoint requires the user_id & the products added to this order must already exits in the sellers database. Please make sure it the respective seller's product.
 	  </p>
 	  
 	  <div class="parameters">
@@ -168,6 +169,10 @@
           <tbody>
             <tr>
               <td>user_id</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>company_name</td>
               <td>string</td>
             </tr>
 			<tr>
@@ -204,6 +209,7 @@
 // Test Create Order Endpoint
 $orderData = [
     "user_id" => "5",
+    "company_name" => "CyberKodes",
     "customer_name" => "John Doe",
     "customer_contact" => "john@example.com",
     "customer_location" => "123 Main Street, New York",
@@ -211,16 +217,16 @@ $orderData = [
 	"payment_status" => "pending",
     "items" => [
         [
-            "product_id" => 5,
-            "product_name" => "Spray",
-            "price" => 12.00,
-            "quantity" => 1
+            "product_id" => 41,
+            "product_name" => "Iphone",
+            "price" => 701,
+            "quantity" => 2
         ],
         [
-            "product_id" => 6,
-            "product_name" => "Milo",
-            "price" => 10.99,
-            "quantity" => 1
+            "product_id" => 43,
+            "product_name" => "rice",
+            "price" => 32,
+            "quantity" => 2
         ]
     ]
 ];
