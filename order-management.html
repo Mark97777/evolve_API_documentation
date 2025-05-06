@@ -130,7 +130,7 @@
       <ol>
 		<li>The seller / user must be signin to access the order system / feature.</li>
 		<li>When an order is deleted, it related order items are deleted too.</li>
-		<li>After a successful payment, call the update payment endpoint and update payment status to "paid".</li>
+		<li>After a successful payment, the payment system would payment status to "paid".</li>
 		<li>Order requires the product ID and details, if the product added to the order doesn't exist in the seller's products, the system will throw an error.</li>
       </ol>
 	  <p></p>
@@ -192,10 +192,6 @@
               <td>string</td>
             </tr>
 			<tr>
-              <td>payment_status</td>
-              <td>string</td>
-            </tr>
-			<tr>
               <td>items</td>
               <td>array containing (products_id,product_name,price & quantity)</td>
             </tr>
@@ -214,7 +210,6 @@ $orderData = [
     "customer_contact" => "john@example.com",
     "customer_location" => "123 Main Street, New York",
 	"delivery_date" => "5/26/2025",
-	"payment_status" => "pending",
     "items" => [
         [
             "product_id" => 41,
@@ -302,10 +297,6 @@ $orderData = [
               <td>string</td>
             </tr>
 			<tr>
-              <td>payment_status</td>
-              <td>string</td>
-            </tr>
-			<tr>
               <td>items</td>
               <td>array containing (products_id,product_name,price & quantity)</td>
             </tr>
@@ -323,7 +314,6 @@ $updateOrderData = [
     "customer_contact" => "john@example.com",
     "customer_location" => "123 Main Street, New York",
 	"delivery_date" => "5/26/2025",
-	"payment_status" => "paid",
     "items" => [
         [
             "product_id" => 5,
@@ -640,90 +630,6 @@ $deleteData = [
     "response": {
         "success": false,
         "error": "No order found with ID: 4"
-    }
-}
-        </code></pre>
-      </div>
-	  
-	  
-	 <!-- Update Payment status Endpoint -->
-    <div class="endpoint">
-      <div class="method post">POST</div>
-      <h3>?action=update-payment-status</h3>
-      <p>Use this endpoint to update the payment status for the order.
-	  <br /><b>Note</b>: This endpoint requires order_id.
-	  </p>
-
-      <div class="parameters">
-        <h4>Request Data</h4>
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Type</th>
-              <th>Description</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>order_id</td>
-              <td>string / int</td>
-              <td>The order's unique ID.</td>
-            </tr>
-			<tr>
-              <td>status</td>
-              <td>string</td>
-              <td>pending, paid , failed</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-
-<div class="response">
-        <h4>JSON Structure</h4>
-        <pre><code>
-// Test Update Payment Status Endpoint
-$paymentData = [
-    "order_id" => 7,               // Required: The order ID to update
-    "status" => "paid",              // Required: New status (pending/paid/failed/refunded)
-];
-        </code></pre>
-      </div>
-    </div>
-	
-	      <div class="response">
-        <h4>Response</h4>
-        <pre><code>
-		SUCCESS  RESPOSNE
-{
-    "request": {
-        "order_id": 6,
-        "status": "paid"
-    },
-    "response": {
-        "status": 200,
-        "response": {
-            "success": true,
-            "message": "Payment status updated successfully",
-            "order_id": "6",
-            "new_status": "paid"
-        }
-    }
-}
-
-		FAIELD  RESPOSNE
-
-{
-    "request": {
-        "order_id": 7,
-        "status": "paid"
-    },
-    "response": {
-        "status": 400,
-        "response": {
-            "success": false,
-            "error": "Order not found with ID: 7"
-        }
     }
 }
         </code></pre>
