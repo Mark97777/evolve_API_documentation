@@ -120,26 +120,35 @@
 </head>
 <body>
   <div class="container">
-    <h1>API Documentation - Mobile Money</h1>
-    <p>Welcome to the Mobile Money API documentation for Evolve.
+    <h1>KYC Documentation</h1>
+    <p>
+		Welcome to the KYC API documentation for Evolve.
 	</p>
 	
-	<!-- Momo Procedure Section -->
+	<!-- KYC Procedure Section -->
     <div class="endpoint">
-      <h2>Momo Payment Steps</h2>
+      <h2>Points to note</h2>
       <ol>
-		<li>Call the initialize-momo endpoint - This initiates a momo payment USSD prompt.</li>
-		<li>Call the momo-otp endpoint - This is conditional. Call it when step 1 returns a <code>"payment_status": "send_otp"</code>. After which you proceed to step 3.</li>
-		<li>Call the verify-momo-payment endpoint - This verify's if the momo pin was inputted and payment has been made.</li>
+		<li>Only signed in users can add KYC details.</li>
+		<li>User can upload Front and back of documents.</li>
+		<li>Max 5MB allowed for upload.</li>
+		<li>API for uploading, getting and deleting KYC files are available. No editing endpoint.</li>
       </ol>
 	  <p></p>
     </div>
 
     <!-- API Key Section -->
     <div class="endpoint">
-      <h2>Main Access point</h2>
+      <h2>Main Access point (except adding a KYC)</h2>
       <p>All requests must point to this url.</p>
       <pre><code>https://xowiepos.com/app/zver1/public/</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point for only adding a KYC</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/index_.php</code></pre>
     </div>
 	
 	<!-- API Key Section -->
@@ -148,13 +157,12 @@
       <p>All requests must include a valid API key in the <code>API-KEY</code> header.</p>
       <pre><code>API-KEY: </code></pre>
     </div>
-
-	 <!-- initialize-momo payment Endpoint -->
+	<!-- Add KYC Endpoint -->
     <div class="endpoint">
       <div class="method post">POST</div>
-      <h3>?action=initialize-momo</h3>
-      <p>Intializes a USSD payment prompt to the user. 
-		<strong>Note: </strong>The order endpoint will give you the data to needed for the momo payment endpoint.
+      <h3>?action=submit-kyc</h3>
+      <p>The add KYC form must make a post request to this endpoint.
+	  <br /><b>Note:</b> This endpoint support two uploads thus (front and back) files only. <br />Kindly note to include user_id.
 	  </p>
 	  
 	  <div class="parameters">
@@ -167,46 +175,30 @@
             </tr>
           </thead>
           <tbody>
-			<tr>
-              <td>email</td>
-              <td>string</td>
-            </tr>
             <tr>
-              <td>amount</td>
-              <td>int</td>
+              <td>user_id</td>
+              <td>string / int</td>
             </tr>
 			<tr>
-              <td>phone</td>
-              <td>string</td>
+              <td>type_of_id</td>
+              <td>string / int (Ghana Card, passport, etc..)</td>
             </tr>
 			<tr>
-              <td>provider</td>
-              <td>'MTN' or 'ATL' or 'VOD'</td>
+              <td>front_photo</td>
+              <td>media file</td>
             </tr>
 			<tr>
-              <td>invoice_id</td>
-              <td>string</td>
-            </tr>
-			<tr>
-              <td>order_id</td>
-              <td>int</td>
+              <td>back_photo</td>
+              <td>media file</td>
             </tr>
           </tbody>
         </table>
       </div>
 
-<div class="response">
+<div style = "" class="response">
         <h4>JSON Structure</h4>
         <pre><code>
-// Data to be sent
-$data = [
-    'email' => 'gmark97777@gmail.com',
-    'amount' => 2,
-    'phone' => '0597189772',
-    'provider' => 'MTN', // MTN, ATL, VOD
-    'invoice_id' => '#e384-vx', // Invoice_ID 
-    'order_id' => 23 // order_ID
-];
+Must be in forms with all the required input fields
         </code></pre>
       </div>
     </div>
@@ -216,32 +208,26 @@ $data = [
         <pre><code>
 		SUCCESS RESPONSE
 {
-    "status": true,
-    "message": "Charge attempted",
-    "reference": "qq0nj6r1o17qohx",
-    "payment_status": "pay_offline",
-    "display_info": "Please complete the authorisation process by inputting your PIN on your mobile device"
+  "success": true,
+  "message": "KYC submitted successfully",
+  "user_id": "5",
+  "front_photo": "uploads/kyc/kyc_5_front_5fd1513e6cf277d0.jpg",
+  "back_photo": "uploads/kyc/kyc_5_back_34c0fe5ed0375ae5.jpeg"
 }
 		ERROR RESPONSE
-{
-    "status": false,
-    "message": "Unable to charge card",
-    "reference": "N\/A",
-    "payment_status": "No Info",
-    "display_info": "No Info"
-}
+{"success": false, "error": "Failed to add KYC."}
+
         </code></pre>
       </div>
     </div>
 	
 	
 	
-	<!-- Verify MOMO OTP Endpoint -->
+	<!-- Get KYC Endpoint -->
     <div class="endpoint">
       <div class="method post">POST</div>
-      <h3>?action=momo-otp</h3>
-      <p>This is a conditional endpoint. Call it when <code>initialize-momo</code> endpoint returns a <code>"payment_status": "send_otp"</code>. After which you proceed to now verify the momo payment.
-	  <br /><b>NOTE</b>: This endpoint is called because, some users would receive an OTP by their service providers before they receive the USSD prompt to pay. You need to verify the sent OTP via this endpoint.
+      <h3>?action=get-kyc</h3>
+      <p>This endpoint will return the KYC information.
 	  </p>
 
       <div class="parameters">
@@ -251,22 +237,16 @@ $data = [
             <tr>
               <th>Name</th>
               <th>Type</th>
-              <th>Description</th>
             </tr>
           </thead>
           <tbody>
-			<tr>
-			  <td>otp</td>
-			  <td>string</td>
-			  <td>The OTP sent to the customer by their service provider before actual USSD payment prompt. <br /><b>Note</b>: Unless this endpoint is called user wont receive USSD payment prompt.</td>
-			</tr>
             <tr>
-              <td>reference</td>
-              <td>string</td>
-              <td>The reference generated by the <code>?action=initialize-momo</code>.</td>
+              <td>user_id</td>
+              <td>string / int</td>
             </tr>
           </tbody>
         </table>
+      </div>
       </div>
 	  
 	  <div class="response">
@@ -274,9 +254,8 @@ $data = [
         <pre><code>
 // Data to be sent
 $data = [
-    'otp' => '123456', // To be provided by the customer
-    'reference' => 's62lmetk7eko974' // A reference for the client during initialize-momo call
-];
+    "user_id" => "1"
+];		
         </code></pre>
       </div>
     </div>
@@ -286,33 +265,36 @@ $data = [
         <pre><code>
 		SUCCESS  RESPOSNE
 {
-    "status": true,
-    "message": "Charge attempted",
-    "reference": "eiw8l9wsqivazj4",
-    "payment_status": "pay_offline",
-    "display_info": "Please complete the authorisation process by inputting your PIN on your mobile device"
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": {
+            "id": 5,
+            "user_id": 1,
+            "type_of_id": "Ghana Card",
+            "front_photo": "uploads\/kyc\/kyc_5_front_5fd1513e6cf277d0.jpg",
+            "back_photo": "uploads\/kyc\/kyc_5_back_34c0fe5ed0375ae5.jpeg"
+        }
+    }
 }
-
 		ERROR  RESPOSNE
 {
-    "status": true,
-    "message": "Charge attempted",
-    "reference": "N\/A",
-    "otp_status": "requery",
-    "display_text": "No Information"
+    "status": 404,
+    "response": {
+        "success": false,
+        "error": "KYC record not found for this user"
+    }
 }
         </code></pre>
       </div>
     </div>
-	
-	
-
-    <!-- Send Email Endpoint -->
+	  
+	  <!-- Delete KYC Endpoint -->
     <div class="endpoint">
       <div class="method post">POST</div>
-      <h3>?action=verify-momo-payment</h3>
-      <p>Verify or confirm whether a customer has geniunely completed a momo payment.
-	  <br /><b>Note</b>: Always confirm the payment status and ensure the amount paid by the user matches the actual amount needed to be paid to Evolve before delivering value to the user.
+      <h3>?action=delete-kyc</h3>
+      <p>Use this endpoint to delete a seller's KYC.
+	  <br /><b>Note</b>: Always make a post request with the KYC ID.
 	  </p>
 
       <div class="parameters">
@@ -327,9 +309,9 @@ $data = [
           </thead>
           <tbody>
             <tr>
-              <td>reference</td>
-              <td>string</td>
-              <td>The reference generated during <code>initialize-momo</code> API call.</td>
+              <td>kyc_id</td>
+              <td>string / int</td>
+              <td>The KYC unique ID.</td>
             </tr>
           </tbody>
         </table>
@@ -339,8 +321,8 @@ $data = [
         <h4>JSON Structure</h4>
         <pre><code>
 // Data to be sent
-$data = [
-    'reference' => 'qq0nj6r1o17qohx'	// Generated for the customer during initialize momo call
+$kycData = [
+    "kyc_id" => "5"
 ];
         </code></pre>
       </div>
@@ -351,32 +333,29 @@ $data = [
         <pre><code>
 		SUCCESS  RESPOSNE
 {
-    "status": true,
-    "message": "Reference check successful",
-    "reference": "qq0nj6r1o17qohx",
-    "payment_status": "success",
-    "payment_amount": "2.22",
-    "display_info": "madePayment"
-}
-
-		PENDING RESPONSE = Pending also means failed or USER should try again
-		
-{
-    "status": true,
-    "message": "Reference check successful",
-    "reference": "lig9akr1ayqpssr",
-    "payment_status": "pending",
-    "payment_amount": "0.00",
-    "display_info": "No additional info"
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "KYC record deleted successfully",
+        "kyc_id": "5"
+    }
 }
 
 		FAIELD  RESPOSNE
+
 {
-    "status": true,
-    "message": "Charge attempted",
-    "reference": "N\/A",
-    "otp_status": "requery",
-    "display_text": "No Information"
+    "status": 200,
+    "response": {
+        "success": false,
+        "error": "KYC not found or already deleted."
+    }
+}
+
+{
+    "status": 400,
+    "response": {
+        "error": "An error occured."
+    }
 }
         </code></pre>
       </div>

@@ -120,17 +120,17 @@
 </head>
 <body>
   <div class="container">
-    <h1>API Documentation - Mobile Money</h1>
-    <p>Welcome to the Mobile Money API documentation for Evolve.
+    <h1>Dasboard Documentation - Mobile Money</h1>
+    <p>This API will return the necessary data needed on Evolve's Partner dashboard.
 	</p>
 	
 	<!-- Momo Procedure Section -->
     <div class="endpoint">
-      <h2>Momo Payment Steps</h2>
+      <h2>Please note!</h2>
       <ol>
-		<li>Call the initialize-momo endpoint - This initiates a momo payment USSD prompt.</li>
-		<li>Call the momo-otp endpoint - This is conditional. Call it when step 1 returns a <code>"payment_status": "send_otp"</code>. After which you proceed to step 3.</li>
-		<li>Call the verify-momo-payment endpoint - This verify's if the momo pin was inputted and payment has been made.</li>
+		<li>Transaction history endpoint will return data on total revenue, profit margin, transaction history and other stats.</li>
+		<li>Count total endpoint will return data on total product for the seller.</li>
+		<li>The best selling endpoint would also return data on best selling products.</li>
       </ol>
 	  <p></p>
     </div>
@@ -152,9 +152,8 @@
 	 <!-- initialize-momo payment Endpoint -->
     <div class="endpoint">
       <div class="method post">POST</div>
-      <h3>?action=initialize-momo</h3>
-      <p>Intializes a USSD payment prompt to the user. 
-		<strong>Note: </strong>The order endpoint will give you the data to needed for the momo payment endpoint.
+      <h3>?action=get-transaction-history</h3>
+      <p>Returns data on transaction history, total revenue, profit margin and other stats. 
 	  </p>
 	  
 	  <div class="parameters">
@@ -168,28 +167,8 @@
           </thead>
           <tbody>
 			<tr>
-              <td>email</td>
+              <td>user_id</td>
               <td>string</td>
-            </tr>
-            <tr>
-              <td>amount</td>
-              <td>int</td>
-            </tr>
-			<tr>
-              <td>phone</td>
-              <td>string</td>
-            </tr>
-			<tr>
-              <td>provider</td>
-              <td>'MTN' or 'ATL' or 'VOD'</td>
-            </tr>
-			<tr>
-              <td>invoice_id</td>
-              <td>string</td>
-            </tr>
-			<tr>
-              <td>order_id</td>
-              <td>int</td>
             </tr>
           </tbody>
         </table>
@@ -199,13 +178,8 @@
         <h4>JSON Structure</h4>
         <pre><code>
 // Data to be sent
-$data = [
-    'email' => 'gmark97777@gmail.com',
-    'amount' => 2,
-    'phone' => '0597189772',
-    'provider' => 'MTN', // MTN, ATL, VOD
-    'invoice_id' => '#e384-vx', // Invoice_ID 
-    'order_id' => 23 // order_ID
+$requestData = [
+    "user_id" => 5
 ];
         </code></pre>
       </div>
@@ -216,19 +190,66 @@ $data = [
         <pre><code>
 		SUCCESS RESPONSE
 {
-    "status": true,
-    "message": "Charge attempted",
-    "reference": "qq0nj6r1o17qohx",
-    "payment_status": "pay_offline",
-    "display_info": "Please complete the authorisation process by inputting your PIN on your mobile device"
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": [
+            {
+                "id": "23",
+                "customer_name": "John Doe",
+                "order_date": "2025-05-11 19:40:45",
+                "total_amount": "2.00",
+                "payment_status": "paid",
+                "item_ids": "42",
+                "product_names": "Iphone",
+                "quantities": "2",
+                "item_prices": "1.00",
+                "product_ids": "68",
+                "items": [
+                    {
+                        "id": 42,
+                        "order_id": 23,
+                        "product_id": 68,
+                        "product_name": "Iphone",
+                        "price": "1.00",
+                        "quantity": 2,
+                        "created_at": "2025-05-11 18:40:45",
+                        "cost_price": "0.3"
+                    }
+                ]
+            }
+        ],
+        "count": 1,
+        "total_count": 1,
+        "amount_summary": {
+            "paid": 2,
+            "unpaid": 0,
+            "total": 2,
+            "total_revenue": 2,
+            "total_cost": 0.6,
+            "total_profit": 1.4,
+            "profit_margin": 70
+        }
+    }
 }
 		ERROR RESPONSE
 {
-    "status": false,
-    "message": "Unable to charge card",
-    "reference": "N\/A",
-    "payment_status": "No Info",
-    "display_info": "No Info"
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": [],
+        "count": 0,
+        "total_count": 0,
+        "amount_summary": {
+            "paid": 0,
+            "unpaid": 0,
+            "total": 0,
+            "total_revenue": 0,
+            "total_cost": 0,
+            "total_profit": 0,
+            "profit_margin": 0
+        }
+    }
 }
         </code></pre>
       </div>
@@ -239,9 +260,9 @@ $data = [
 	<!-- Verify MOMO OTP Endpoint -->
     <div class="endpoint">
       <div class="method post">POST</div>
-      <h3>?action=momo-otp</h3>
-      <p>This is a conditional endpoint. Call it when <code>initialize-momo</code> endpoint returns a <code>"payment_status": "send_otp"</code>. After which you proceed to now verify the momo payment.
-	  <br /><b>NOTE</b>: This endpoint is called because, some users would receive an OTP by their service providers before they receive the USSD prompt to pay. You need to verify the sent OTP via this endpoint.
+      <h3>?action=get-total-products-count</h3>
+      <p>
+		This endpoint returns total product available in a seller's store.
 	  </p>
 
       <div class="parameters">
@@ -256,15 +277,10 @@ $data = [
           </thead>
           <tbody>
 			<tr>
-			  <td>otp</td>
-			  <td>string</td>
-			  <td>The OTP sent to the customer by their service provider before actual USSD payment prompt. <br /><b>Note</b>: Unless this endpoint is called user wont receive USSD payment prompt.</td>
+			  <td>user_id</td>
+			  <td>int</td>
+			  <td>The seller's ID</td>
 			</tr>
-            <tr>
-              <td>reference</td>
-              <td>string</td>
-              <td>The reference generated by the <code>?action=initialize-momo</code>.</td>
-            </tr>
           </tbody>
         </table>
       </div>
@@ -274,8 +290,7 @@ $data = [
         <pre><code>
 // Data to be sent
 $data = [
-    'otp' => '123456', // To be provided by the customer
-    'reference' => 's62lmetk7eko974' // A reference for the client during initialize-momo call
+    'user_id' => '1' // User's ID
 ];
         </code></pre>
       </div>
@@ -286,20 +301,22 @@ $data = [
         <pre><code>
 		SUCCESS  RESPOSNE
 {
-    "status": true,
-    "message": "Charge attempted",
-    "reference": "eiw8l9wsqivazj4",
-    "payment_status": "pay_offline",
-    "display_info": "Please complete the authorisation process by inputting your PIN on your mobile device"
+    "status": 200,
+    "response": {
+        "success": true,
+        "user_id": 5,
+        "total_quantity": 98,
+        "message": "Total products count retrieved successfully"
+    }
 }
 
 		ERROR  RESPOSNE
 {
-    "status": true,
-    "message": "Charge attempted",
-    "reference": "N\/A",
-    "otp_status": "requery",
-    "display_text": "No Information"
+    "status": 400,
+    "response": {
+        "success": false,
+        "error": "User not found with ID: 44"
+    }
 }
         </code></pre>
       </div>
@@ -307,12 +324,12 @@ $data = [
 	
 	
 
-    <!-- Send Email Endpoint -->
+    <!-- bEST performing product Endpoint -->
     <div class="endpoint">
       <div class="method post">POST</div>
-      <h3>?action=verify-momo-payment</h3>
-      <p>Verify or confirm whether a customer has geniunely completed a momo payment.
-	  <br /><b>Note</b>: Always confirm the payment status and ensure the amount paid by the user matches the actual amount needed to be paid to Evolve before delivering value to the user.
+      <h3>?action=get-best-selling-product</h3>
+      <p>
+		Returns best selling products in an order.
 	  </p>
 
       <div class="parameters">
@@ -327,9 +344,9 @@ $data = [
           </thead>
           <tbody>
             <tr>
-              <td>reference</td>
-              <td>string</td>
-              <td>The reference generated during <code>initialize-momo</code> API call.</td>
+              <td>user_id</td>
+              <td>string / int</td>
+              <td>Seller's ID</td>
             </tr>
           </tbody>
         </table>
@@ -340,7 +357,7 @@ $data = [
         <pre><code>
 // Data to be sent
 $data = [
-    'reference' => 'qq0nj6r1o17qohx'	// Generated for the customer during initialize momo call
+    'user_id' => '1'	// Seller's ID
 ];
         </code></pre>
       </div>
@@ -351,32 +368,44 @@ $data = [
         <pre><code>
 		SUCCESS  RESPOSNE
 {
-    "status": true,
-    "message": "Reference check successful",
-    "reference": "qq0nj6r1o17qohx",
-    "payment_status": "success",
-    "payment_amount": "2.22",
-    "display_info": "madePayment"
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": [
+            {
+                "id": 47,
+                "name": "Iphone",
+                "price": 1,
+                "stock_quantity": 498,
+                "total_sold": 4,
+                "total_revenue": 4,
+                "profit_margin": 50
+            },
+            {
+                "id": 48,
+                "name": "Iphone",
+                "price": 1,
+                "stock_quantity": 701,
+                "total_sold": 1,
+                "total_revenue": 1,
+                "profit_margin": 60
+            }
+        ],
+        "period": "all_time",
+        "limit": 5
+    }
 }
 
-		PENDING RESPONSE = Pending also means failed or USER should try again
-		
+		ERROR
 {
-    "status": true,
-    "message": "Reference check successful",
-    "reference": "lig9akr1ayqpssr",
-    "payment_status": "pending",
-    "payment_amount": "0.00",
-    "display_info": "No additional info"
-}
-
-		FAIELD  RESPOSNE
-{
-    "status": true,
-    "message": "Charge attempted",
-    "reference": "N\/A",
-    "otp_status": "requery",
-    "display_text": "No Information"
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": [],
+        "message": "No products found for this user",
+        "period": "all_time",
+        "limit": 5
+    }
 }
         </code></pre>
       </div>

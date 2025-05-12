@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <style>
+    /* Dark Theme Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #ff6f61;
+    }
+
+    a {
+      color: #4dabf7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background-color: #333;
+      color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    pre {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    .endpoint {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .endpoint h3 {
+      margin-top: 0;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .get {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .post {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .put {
+      background-color: #ff9800;
+      color: #fff;
+    }
+
+    .delete {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .parameters, .response {
+      margin-top: 15px;
+    }
+
+    .parameters table, .response table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .parameters th, .response th {
+      background-color: #333;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .parameters td, .response td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #2a2a2a;
+      color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>User Profile Edit Documentation</h1>
+    <p>This documentation helps you to edit the user credentials for Evolve Partners.
+	</p>
+	
+	<!-- Momo Procedure Section -->
+    <div class="endpoint">
+      <h2>Points to note</h2>
+      <ol>
+		<li>Requires that user is already signed in</li>
+		<li>Profile photo is optional during updating.</li>
+		<li>Input field for profile photo should have key / name value of <b>profile_picture</b>.(very important for image upload to work.)</li>
+      </ol>
+	  <p></p>
+    </div>
+
+    <!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Authentication</h2>
+      <p>All requests must include a valid API key in the <code>API-KEY</code> header.</p>
+      <pre><code>API-KEY: </code></pre>
+    </div>
+	
+	<!-- Update User Profile Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=update-user</h3>
+      <p>This endpoint will update the user profile information.
+	  <br /><b>NOTE</b>: Updating any user information is optional.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+            </tr>
+			<tr>
+              <td>first_name</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>last_name</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>telephone</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>company</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>bio</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>country</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>city</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>profile_picture</td>
+              <td>file</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+	  
+	  <div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+Form must inlcude all required data above
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "User profile updated successfully",
+        "user": {
+            "id": 5,
+            "first_name": "Mark",
+            "last_name": "Graham",
+            "email": "john.doe@example.com",
+            "telephone": "0560875602",
+            "company": "Cyberkodes",
+            "bio": "Technology company",
+            "country": "Ghana",
+            "city": "Cape Coast",
+            "media_path": ""
+        }
+    }
+}
+		ERROR  RESPOSNE
+{
+    "status": 400,
+    "response": {
+        "success": false,
+        "error": "User not found."
+    }
+}
+        </code></pre>
+      </div>
+    </div>
+	
+	
+  <div class="footer">
+    <p>&copy; 2025 EVOLVE. All rights reserved.</p>
+  </div>
+</body>
+</html>
