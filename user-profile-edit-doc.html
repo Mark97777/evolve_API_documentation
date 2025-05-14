@@ -121,7 +121,7 @@
 <body>
   <div class="container">
     <h1>User Profile Edit Documentation</h1>
-    <p>This documentation helps you to edit the user credentials for Evolve Partners.
+    <p>This documentation helps you to edit and get the user's detail credentials for Evolve Partners.
 	</p>
 	
 	<!-- Momo Procedure Section -->
@@ -244,6 +244,76 @@ Form must inlcude all required data above
     "status": 400,
     "response": {
         "success": false,
+        "error": "User not found."
+    }
+}
+        </code></pre>
+      </div>
+    </div>
+	
+	<div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-user-details</h3>
+      <p>This endpoint will return the user profile information.
+	  <br /><b>NOTE</b>: It requires user ID.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+	  
+	  <div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Test Login Endpoint
+$data = [
+    "user_id" => 4
+];
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "message": "Login successful.",
+        "user": {
+            "id": "5",
+            "first_name": "Mark",
+            "last_name": "Graham",
+            "email": "john.doe@example.com",
+            "telephone": "0560875602",
+            "company": "Cyberkodes",
+            "bio": "Technology company",
+            "country": "Ghana",
+            "city": "Cape Coast",
+            "media_path": ""
+        }
+    }
+}
+		ERROR  RESPOSNE
+{
+    "status": 401,
+    "response": {
         "error": "User not found."
     }
 }
