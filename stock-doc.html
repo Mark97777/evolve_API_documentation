@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <style>
+    /* Dark Theme Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #ff6f61;
+    }
+
+    a {
+      color: #4dabf7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background-color: #333;
+      color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    pre {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    .endpoint {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .endpoint h3 {
+      margin-top: 0;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .get {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .post {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .put {
+      background-color: #ff9800;
+      color: #fff;
+    }
+
+    .delete {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .parameters, .response {
+      margin-top: 15px;
+    }
+
+    .parameters table, .response table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .parameters th, .response th {
+      background-color: #333;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .parameters td, .response td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #2a2a2a;
+      color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Stock Documentation</h1>
+    <p>Welcome to the Stock API documentation for Evolve.
+	</p>
+	
+	<!-- Momo Procedure Section -->
+    <div class="endpoint">
+      <h2>Points to note</h2>
+      <ol>
+		<li>The seller / user must be signin to access the stock system / feature.</li>
+		<li>The stock API returns data about products, it stock and sold items.</li>
+      </ol>
+	  <p></p>
+    </div>
+
+    <!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Authentication</h2>
+      <p>All requests must include a valid API key in the <code>API-KEY</code> header.</p>
+      <pre><code>API-KEY: </code></pre>
+    </div>
+	
+	
+	<!-- Get get-stock-summary Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-stock-summary</h3>
+      <p>Use this endpoint to get or retrieve data about stock summary.
+	  <br /><b>Note</b>: Always make a post request with the seller ID.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+              <td>user unique ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$requestData = [
+    "user_id" => "Dynamic_user_id"
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "user_id": 4,
+        "summary": {
+            "total_stock": 1197,
+            "total_products": 3,
+            "out_of_stock": 0,
+            "low_stock": 1,
+            "medium_stock": 0,
+            "high_stock": 2,
+            "out_of_stock_items": [],
+            "low_stock_items": [
+                {
+                    "product_id": 49,
+                    "product_name": "Refrigerator",
+                    "quantity": 1
+                }
+            ],
+            "medium_stock_items": [],
+            "high_stock_items": [
+                {
+                    "product_id": 47,
+                    "product_name": "Iphone",
+                    "quantity": 496
+                },
+                {
+                    "product_id": 48,
+                    "product_name": "Stove",
+                    "quantity": 700
+                }
+            ]
+        },
+        "thresholds": {
+            "low": 10,
+            "medium": 50
+        },
+        "message": "Stock summary retrieved successfully"
+    }
+}
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 200,
+    "response": {
+        "success": false,
+        "error": "User not found with ID: 7"
+    }
+}
+
+        </code></pre>
+      </div>
+	
+	
+	
+	
+	
+
+    <!-- Get get-sold-items Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-sold-items</h3>
+      <p>Use this endpoint to get or retrieve a sold products and it related information.
+	  <br /><b>Note</b>: Always make a post request with the seller's ID (user_id).
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+              <td>The seller's unique ID.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$requestData = [
+    "user_id" => "Dynamic_user_id"
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "user_id": 4,
+        "thresholds": {
+            "low_stock": 10,
+            "moderate_stock": 50
+        },
+        "status_counts": {
+            "out_of_stock": 1,
+            "low_stock": 0,
+            "moderate_stock": 0,
+            "high_stock": 2
+        },
+        "sold_products": [
+            {
+                "product_id": 49,
+                "product_name": "Refrigerator",
+                "total_sold": "1",
+                "total_revenue": "1.00",
+                "current_stock": "0",
+                "stock_status": "out_of_stock"
+            },
+            {
+                "product_id": 47,
+                "product_name": "Iphone",
+                "total_sold": "4",
+                "total_revenue": "4.00",
+                "current_stock": "496",
+                "stock_status": "high_stock"
+            },
+            {
+                "product_id": 48,
+                "product_name": "stove",
+                "total_sold": "1",
+                "total_revenue": "1.00",
+                "current_stock": "700",
+                "stock_status": "high_stock"
+            }
+        ],
+        "message": "Sold products with stock status retrieved successfully"
+    }
+}
+
+
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 404,
+    "response": {
+        "success": false,
+        "error": "User not found with ID: 8"
+    }
+}
+        </code></pre>
+      </div>
+	  
+
+  <div class="footer">
+    <p>&copy; 2025 EVOLVE. All rights reserved.</p>
+  </div>
+</body>
+</html>
