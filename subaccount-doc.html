@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <style>
+    /* Dark Theme Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #ff6f61;
+    }
+
+    a {
+      color: #4dabf7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background-color: #333;
+      color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    pre {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    .endpoint {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .endpoint h3 {
+      margin-top: 0;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .get {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .post {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .put {
+      background-color: #ff9800;
+      color: #fff;
+    }
+
+    .delete {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .parameters, .response {
+      margin-top: 15px;
+    }
+
+    .parameters table, .response table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .parameters th, .response th {
+      background-color: #333;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .parameters td, .response td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #2a2a2a;
+      color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Subaccount Documentation</h1>
+    <p>This API helps an Evolve Partner to add a subaccount (account to receive money on).
+	</p>
+	
+	<!-- Momo Procedure Section -->
+    <div class="endpoint">
+      <h2>Steps Involved</h2>
+      <ol>
+		<li>Partner must have signed in, becuase their user_id would be required at a point.</li>
+		<li>Partner inputs their business name, service provider and momo number.(From UI and received by the create-subaccount endpoint)</li>
+		<li>Previews the results ( backend API returned data ).</li>
+		<li>Confirms the preview (API takes only the subaccount_code and user_id and saves it for the user).</li>
+      </ol>
+	  <p></p>
+    </div>
+
+    <!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Authentication</h2>
+      <p>All requests must include a valid API key in the <code>API-KEY</code> header.</p>
+      <pre><code>API-KEY: </code></pre>
+    </div>
+
+	 <!-- Create Subaccount Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=create-subaccount</h3>
+      <p>The create-subaccount endpoint receives the user's business name, network provider & account number. Uses this information to create a unique subaccount code for sending money to the Partner. 
+	  </p>
+	  
+	  <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+			<tr>
+              <td>bussiness_name</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>bank_provider</td>
+              <td>string</td>
+            </tr>
+			<tr>
+              <td>bank_account</td>
+              <td>string</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$data = [
+    'bussiness_name' => 'Cyberkodes',
+    'bank_provider' => 'ATL', // MTN,ATL,VOD
+    'bank_account' => '0560875602' 
+];
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS RESPONSE
+{
+    "status": true,
+    "message": "Subaccount Created Successfully",
+    "Business Name": "Cyberkodes",
+    "Account Name": "MARK ANTHONY GRAHAM",
+    "Account Number": "0560875602",
+    "Settlement Bank": "AirtelTigo",
+    "Subaccount code": "ACCT_kdae29sfl1cvqsb"
+}
+		ERROR RESPONSE
+{
+    "status": false,
+    "message": "Account details are invalid"
+}
+        </code></pre>
+      </div>
+    </div>
+	
+	
+	
+	<!-- Saving Subaccount code Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=update-subaccount</h3>
+      <p>
+		This endpoint updates Partner's profile with their chosen subaccount.<br />
+		NOTE!: This endpoint requires only user_id and subaccount_code (generated from the create-subaccount endpoint).
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+			<tr>
+			  <td>user_id</td>
+			  <td>int</td>
+			  <td>The seller's ID</td>
+			</tr>
+			<tr>
+			  <td>subaccount</td>
+			  <td>strings</td>
+			  <td>A unique code that represents Partner's initial momo number.</td>
+			</tr>
+          </tbody>
+        </table>
+      </div>
+	  
+	  <div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$data = [
+    "user_id" => 5,
+    "subaccount" => 'ACCT_kfie53qoq0nllme' // previously generated by the create-subaccount endpoint
+];
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "message": "Account saved successfully. We will pay you on this account."
+    }
+}
+
+		ERROR  RESPOSNE
+{
+    "status": 401,
+    "response": {
+        "error": "User does not exist."
+    }
+}
+        </code></pre>
+      </div>
+    </div>
+
+  <div class="footer">
+    <p>&copy; 2025 EVOLVE. All rights reserved.</p>
+  </div>
+</body>
+</html>

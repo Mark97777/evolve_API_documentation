@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>API Documentation</title>
+  <style>
+    /* Dark Theme Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #1e1e1e;
+      color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    h1, h2, h3 {
+      color: #ff6f61;
+    }
+
+    a {
+      color: #4dabf7;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background-color: #333;
+      color: #f4f4f4;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: "Courier New", Courier, monospace;
+    }
+
+    pre {
+      background-color: #333;
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+    }
+
+    .endpoint {
+      background-color: #2a2a2a;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    .endpoint h3 {
+      margin-top: 0;
+    }
+
+    .method {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
+
+    .get {
+      background-color: #4caf50;
+      color: #fff;
+    }
+
+    .post {
+      background-color: #2196f3;
+      color: #fff;
+    }
+
+    .put {
+      background-color: #ff9800;
+      color: #fff;
+    }
+
+    .delete {
+      background-color: #f44336;
+      color: #fff;
+    }
+
+    .parameters, .response {
+      margin-top: 15px;
+    }
+
+    .parameters table, .response table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .parameters th, .response th {
+      background-color: #333;
+      padding: 10px;
+      text-align: left;
+    }
+
+    .parameters td, .response td {
+      padding: 10px;
+      border-bottom: 1px solid #444;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #2a2a2a;
+      color: #f4f4f4;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Evolve Admin Dasboard Documentation</h1>
+    <p>This API will return the necessary data needed on Evolve Admin dashboard.
+	</p>
+	
+	<!-- Momo Procedure Section -->
+    <div class="endpoint">
+      <h2>Please note!</h2>
+      <ol>
+		<li>Evolve Admin, will register like any normal partner registration (but will receive a unique priviledge afterwards).</li>
+		<li>As a top level admin, sees all data of all partners.</li>
+		<li>There are only two endpoints available for the Admin dashboard.</li>
+      </ol>
+	  <p></p>
+    </div>
+
+    <!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Main Access point</h2>
+      <p>All requests must point to this url.</p>
+      <pre><code>https://xowiepos.com/app/zver1/public/</code></pre>
+    </div>
+	
+	<!-- API Key Section -->
+    <div class="endpoint">
+      <h2>Authentication</h2>
+      <p>All requests must include a valid API key in the <code>API-KEY</code> header.</p>
+      <pre><code>API-KEY: </code></pre>
+    </div>
+
+	 <!-- Get all users Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-all-users</h3>
+      <p>Returns data on all registered Evolve Partners including their total count. 
+	  </p>
+	  
+	  <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+			<tr>
+              <td>requires nothing</td>
+              <td>requires nothing</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$requestData = [
+    // No data is required... just call.
+];
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS RESPONSE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "total_users": 3,
+        "users": [
+            {
+                "id": 8,
+                "first_name": "Mark",
+                "last_name": "Graham",
+                "email": "cyberkodes@gmail.com",
+                "telephone": "0560875602",
+                "company": "Cyberkodes",
+                "bio": "",
+                "country": "",
+                "city": "",
+                "media_path": ""
+            },
+            {
+                "id": 5,
+                "first_name": "Vaga",
+                "last_name": "Doe",
+                "email": "vaga.doe@example.com",
+                "telephone": "0270123456",
+                "company": "Vagas Grocery",
+                "bio": "Vegetable company",
+                "country": "Ghana",
+                "city": "Cape Coast",
+                "media_path": ""
+            },
+            {
+                "id": 4,
+                "first_name": "Mark",
+                "last_name": "Graham",
+                "email": "john.doe@example.com",
+                "telephone": "0560875602",
+                "company": "Cybertron",
+                "bio": "Technology company",
+                "country": "Ghana",
+                "city": "Cape Coast",
+                "media_path": "uploads\/john_doe_example_com_1745332175.jpeg"
+            }
+        ],
+        "message": "Users retrieved successfully"
+    }
+}
+		ERROR RESPONSE
+{
+    "status": 400,
+    "response": {
+        "success": false,
+        "error": "An error occured"
+    }
+}
+        </code></pre>
+      </div>
+    </div>
+	
+	
+	
+	<!-- get-all-transaction-history Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-all-transaction-history</h3>
+      <p>
+		This endpoint returns all the transaction history of the entire Partners available.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+			<tr>
+			  <td>nothing required</td>
+			  <td>nothing required</td>
+			  <td>nothing required</td>
+			</tr>
+          </tbody>
+        </table>
+      </div>
+	  
+	  <div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$data = [
+    // nothing is required
+];
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": [
+            {
+                "id": "24",
+                "user_id": "9",
+                "user_company": "Tulasi",
+                "customer_name": "Abraham Lincoln",
+                "order_date": "2025-05-16 19:17:27",
+                "total_amount": "0.50",
+                "payment_status": "paid",
+                "item_ids": "43",
+                "product_names": "Stress",
+                "quantities": "1",
+                "item_prices": "0.50",
+                "product_ids": "81",
+                "items": [
+                    {
+                        "id": "43",
+                        "order_id": "24",
+                        "product_id": "81",
+                        "product_name": "Stress",
+                        "price": "0.50",
+                        "quantity": "1",
+                        "created_at": "2025-05-16 18:17:27",
+                        "cost_price": "0.5"
+                    }
+                ],
+                "revenue": 0.5,
+                "cost": 0.5,
+                "profit": 0,
+                "profit_margin": 0
+            },
+            {
+                "id": "23",
+                "user_id": "5",
+                "user_company": "Cyberkodes",
+                "customer_name": "John Doe",
+                "order_date": "2025-05-11 19:40:45",
+                "total_amount": "2.00",
+                "payment_status": "paid",
+                "item_ids": "42",
+                "product_names": "Iphone",
+                "quantities": "2",
+                "item_prices": "1.00",
+                "product_ids": "68",
+                "items": [
+                    {
+                        "id": "42",
+                        "order_id": "23",
+                        "product_id": "68",
+                        "product_name": "Iphone",
+                        "price": "1.00",
+                        "quantity": "2",
+                        "created_at": "2025-05-11 18:40:45",
+                        "cost_price": "0.3"
+                    }
+                ],
+                "revenue": 2,
+                "cost": 0.6,
+                "profit": 1.4,
+                "profit_margin": 70
+            },
+            {
+                "id": "21",
+                "user_id": "9",
+                "user_company": "Tulasi",
+                "customer_name": "Joshua Asiaman Odame",
+                "order_date": "2025-05-10 17:25:05",
+                "total_amount": "730.00",
+                "payment_status": "pending",
+                "item_ids": "40,41",
+                "product_names": "Rice,Tulasi",
+                "quantities": "10,1",
+                "item_prices": "43.00,300.00",
+                "product_ids": "51,50",
+                "items": [
+                    {
+                        "id": "40",
+                        "order_id": "21",
+                        "product_id": "51",
+                        "product_name": "Rice",
+                        "price": "43.00",
+                        "quantity": "10",
+                        "created_at": "2025-05-10 16:25:05",
+                        "cost_price": ""
+                    },
+                    {
+                        "id": "41",
+                        "order_id": "21",
+                        "product_id": "50",
+                        "product_name": "Tulasi",
+                        "price": "300.00",
+                        "quantity": "1",
+                        "created_at": "2025-05-10 16:25:05",
+                        "cost_price": ""
+                    }
+                ],
+                "revenue": 730,
+                "cost": 0,
+                "profit": 730,
+                "profit_margin": 100
+            },
+            {
+                "id": "17",
+                "user_id": "9",
+                "user_company": "Tulasi",
+                "customer_name": "Joseph Nuamah",
+                "order_date": "2025-05-07 14:56:54",
+                "total_amount": "515.00",
+                "payment_status": "pending",
+                "item_ids": "38,39",
+                "product_names": "Rice,Tulasi",
+                "quantities": "5,1",
+                "item_prices": "43.00,300.00",
+                "product_ids": "64,50",
+                "items": [
+                    {
+                        "id": "38",
+                        "order_id": "17",
+                        "product_id": "64",
+                        "product_name": "Rice",
+                        "price": "43.00",
+                        "quantity": "5",
+                        "created_at": "2025-05-09 22:08:27",
+                        "cost_price": ""
+                    },
+                    {
+                        "id": "39",
+                        "order_id": "17",
+                        "product_id": "50",
+                        "product_name": "Tulasi",
+                        "price": "300.00",
+                        "quantity": "1",
+                        "created_at": "2025-05-09 22:08:27",
+                        "cost_price": ""
+                    }
+                ],
+                "revenue": 515,
+                "cost": 0,
+                "profit": 515,
+                "profit_margin": 100
+            },
+            {
+                "id": "16",
+                "user_id": "9",
+                "user_company": "Tulasi",
+                "customer_name": "Joseph Nuamah",
+                "order_date": "2025-05-07 14:55:23",
+                "total_amount": "129.00",
+                "payment_status": "pending",
+                "item_ids": "25",
+                "product_names": "Rice",
+                "quantities": "3",
+                "item_prices": "43.00",
+                "product_ids": "63",
+                "items": [
+                    {
+                        "id": "25",
+                        "order_id": "16",
+                        "product_id": "63",
+                        "product_name": "Rice",
+                        "price": "43.00",
+                        "quantity": "3",
+                        "created_at": "2025-05-07 13:55:23",
+                        "cost_price": "50"
+                    }
+                ],
+                "revenue": 129,
+                "cost": 150,
+                "profit": -21,
+                "profit_margin": -16.28
+            }
+        ],
+        "count": 5,
+        "total_count": 5,
+        "financial_summary": {
+            "paid_amount": 2.5,
+            "unpaid_amount": 1374,
+            "total_amount": 1376.5,
+            "total_revenue": 1376.5,
+            "total_cost": 151.1,
+            "total_profit": 1225.4,
+            "profit_margin": 89.02
+        }
+    }
+}
+
+		ERROR  RESPOSNE
+{
+    "status": 400,
+    "response": {
+        "success": false,
+        "error": "An error occured"
+    }
+}
+        </code></pre>
+      </div>
+    </div>
+	
+
+  <div class="footer">
+    <p>&copy; 2025 EVOLVE. All rights reserved.</p>
+  </div>
+</body>
+</html>

@@ -378,6 +378,57 @@ $data = [
     "otp_status": "requery",
     "display_text": "No Information"
 }
+
+		PAYMENT IS SUCCESSFUL AND SELLER HAD ENOUGH STOCK
+{
+    "status": true,
+    "message": "Reference check successful",
+    "reference": "3chtt5vadkgaaoi",
+    "payment_status": "success",
+    "payment_amount": "2.22",
+    "update_info": {
+        "status": 200,
+        "response": {
+            "success": true,
+            "message": "Payment status updated successfully",
+            "order_id": "24",
+            "invoice_id": "#e723-px",
+            "previous_status": "pending",
+            "new_status": "paid",
+            "quantity_update": {
+                "success": true,
+                "message": "Product quantities updated successfully",
+                "order_id": "24",
+                "updated_products": [
+                    {
+                        "product_id": 49,
+                        "product_name": "Refrigerator",
+                        "quantity_deducted": 1,
+                        "new_stock": 3
+                    }
+                ]
+            }
+        }
+    }
+}
+		
+		PAYMENT WAS SUCCESSFUL BUT SELLER IS OUT OF STOCK
+{
+    "status": true,
+    "message": "Reference check successful",
+    "reference": "3chtt5vadkgaaoi",
+    "payment_status": "success",
+    "payment_amount": "2.22",
+    "update_info": {
+        "status": 400,
+        "response": {
+            "success": false,
+            "error": "Inventory check failed: Insufficient stock for product ID: 49. Available: 0, Requested: 1",
+            "order_id": "24",
+            "invoice_id": "#e723-px"
+        }
+    }
+}
         </code></pre>
       </div>
 	
