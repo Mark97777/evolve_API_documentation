@@ -129,6 +129,7 @@
     <div class="endpoint">
       <h2>Points to note</h2>
       <ol>
+		<li>The upload Selfie endpoint must be called after the submit-kyc has been executed.</li>
 		<li>Only signed in users can add KYC details.</li>
 		<li>User can upload Front and back of documents.</li>
 		<li>Max 5MB allowed for upload.</li>
@@ -180,6 +181,14 @@
               <td>string / int</td>
             </tr>
 			<tr>
+              <td>selfie_photo</td>
+              <td>string (media file)</td>
+            </tr>
+			<tr>
+              <td>id_number</td>
+              <td>string</td>
+            </tr>
+			<tr>
               <td>type_of_id</td>
               <td>string / int (Ghana Card, passport, etc..)</td>
             </tr>
@@ -211,8 +220,10 @@ Must be in forms with all the required input fields
   "success": true,
   "message": "KYC submitted successfully",
   "user_id": "5",
-  "front_photo": "uploads/kyc/kyc_5_front_5fd1513e6cf277d0.jpg",
-  "back_photo": "uploads/kyc/kyc_5_back_34c0fe5ed0375ae5.jpeg"
+  "id_number": "00000002",
+  "type_of_id": "Voter's ID",
+  "front_photo": "uploads/kyc/kyc_5_front_70aa40d4d17666be.jpeg",
+  "back_photo": "uploads/kyc/kyc_5_back_d4834219e1f810e6.png"
 }
 		ERROR RESPONSE
 {"success": false, "error": "Failed to add KYC."}
@@ -269,11 +280,17 @@ $data = [
     "response": {
         "success": true,
         "data": {
-            "id": 5,
-            "user_id": 1,
-            "type_of_id": "Ghana Card",
-            "front_photo": "uploads\/kyc\/kyc_5_front_5fd1513e6cf277d0.jpg",
-            "back_photo": "uploads\/kyc\/kyc_5_back_34c0fe5ed0375ae5.jpeg"
+            "id": 13,
+            "user_id": 5,
+            "selfie_photo": "uploads\/kyc\/selfie_5_b56c167f24670957.jpg",
+            "id_number": "00000002",
+            "type_of_id": "Voter's ID",
+            "front_photo": "uploads\/kyc\/kyc_5_front_15b2f355f4f5ea80.jpeg",
+            "back_photo": "uploads\/kyc\/kyc_5_back_89176c2b22c825dc.png",
+            "status": "REJECTED",
+            "rejection_reason": "Poor selfie visibility",
+            "created_at": "2025-06-07",
+            "reviewed_at": "2025-06-07 03:55:10"
         }
     }
 }
@@ -288,6 +305,206 @@ $data = [
         </code></pre>
       </div>
     </div>
+	  
+	  
+	  
+	  <!-- Get ALL KYC Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=get-all-kyc</h3>
+      <p>This endpoint will return all KYC information for the specified parameter.
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>status</td>
+              <td>string('pending', 'approved' & 'rejected')</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      </div>
+	  
+	  <div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$data = [
+    no data needed
+];		
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "data": [
+            {
+                "id": 5,
+                "user_id": 4,
+                "selfie_photo": "uploads\/kyc\/selfie_4_669bf5e2f8f7614f.jpeg",
+                "id_number": "000****002",
+                "type_of_id": "Ghana Card",
+                "front_photo": "uploads\/kyc\/kyc_4_front_297969c408371b14.jpg",
+                "back_photo": "uploads\/kyc\/kyc_4_back_13602d933705e9ca.png",
+                "status": "",
+                "created_at": "2025-06-07",
+                "email": "john.doe@example.com",
+                "first_name": "Mark",
+                "last_name": "Graham",
+                "front_photo_url": "https:\/\/yourdomain.com\/uploads\/kyc\/kyc_4_front_297969c408371b14.jpg",
+                "back_photo_url": "https:\/\/yourdomain.com\/uploads\/kyc\/kyc_4_back_13602d933705e9ca.png",
+                "selfie_photo_url": "https:\/\/yourdomain.com\/uploads\/kyc\/selfie_4_669bf5e2f8f7614f.jpeg"
+            },
+            {
+                "id": 13,
+                "user_id": 5,
+                "selfie_photo": "uploads\/kyc\/selfie_5_b56c167f24670957.jpg",
+                "id_number": "000****002",
+                "type_of_id": "Voter's ID",
+                "front_photo": "uploads\/kyc\/kyc_5_front_15b2f355f4f5ea80.jpeg",
+                "back_photo": "uploads\/kyc\/kyc_5_back_89176c2b22c825dc.png",
+                "status": "pending",
+                "created_at": "2025-06-07",
+                "email": "vaga.doe@example.com",
+                "first_name": "Mark",
+                "last_name": "Graham",
+                "front_photo_url": "https:\/\/yourdomain.com\/uploads\/kyc\/kyc_5_front_15b2f355f4f5ea80.jpeg",
+                "back_photo_url": "https:\/\/yourdomain.com\/uploads\/kyc\/kyc_5_back_89176c2b22c825dc.png",
+                "selfie_photo_url": "https:\/\/yourdomain.com\/uploads\/kyc\/selfie_5_b56c167f24670957.jpg"
+            }
+        ],
+        "count": 2
+    }
+}
+
+		ERROR  RESPOSNE
+{
+    "status": 404,
+    "response": {
+        "success": false,
+        "error": "an error occured"
+    }
+}
+        </code></pre>
+      </div>
+    </div>
+	  
+	  
+	  
+	   <!-- update KYC status Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=update-kyc-status</h3>
+      <p>Use this endpoint to update a seller's KYC application.
+	  <br /><b>Note</b>: The user_id is required always & when a response is "rejected" always provide a "reason".
+	  </p>
+
+      <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+              <td>User's ID.</td>
+            </tr>
+			<tr>
+              <td>status</td>
+              <td>string</td>
+              <td>'pending' , 'approved' & 'rejected'</td>
+            </tr>
+			<tr>
+              <td>reason</td>
+              <td>string</td>
+              <td>Reason for rejection comes here</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+// Data to be sent
+$kycRequestData = [
+    "user_id" => 5,  // The ID of the order you want to retrieve
+    "status" => "rejected", // approved || rejected & with reason
+    "reason" => "Poor selfie visibility"  // The ID of the order you want to retrieve
+];
+        </code></pre>
+      </div>
+    </div>
+	
+	      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS  RESPOSNE
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "KYC status updated successfully",
+        "status": "APPROVED",
+        "user_id": "5"
+    }
+}
+
+{
+    "status": 200,
+    "response": {
+        "success": true,
+        "message": "KYC status updated successfully",
+        "status": "REJECTED",
+        "user_id": "5"
+    }
+}
+
+
+		FAIELD  RESPOSNE
+
+{
+    "status": 404,
+    "response": {
+        "success": false,
+        "message": "Rejection reason is required when status is REJECTED."
+    }
+}
+
+{
+    "status": 400,
+    "response": {
+        "error": "An error occured."
+    }
+}
+        </code></pre>
+      </div>
+	  
+	  
+	  
+	  
 	  
 	  <!-- Delete KYC Endpoint -->
     <div class="endpoint">
@@ -336,8 +553,13 @@ $kycData = [
     "status": 200,
     "response": {
         "success": true,
-        "message": "KYC record deleted successfully",
-        "kyc_id": "5"
+        "message": "KYC record and associated files deleted successfully",
+        "kyc_id": "14",
+        "files_deleted": {
+            "front_photo": true,
+            "back_photo": true,
+            "selfie_photo": true
+        }
     }
 }
 

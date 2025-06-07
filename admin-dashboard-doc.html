@@ -269,9 +269,14 @@ $requestData = [
           </thead>
           <tbody>
 			<tr>
-			  <td>nothing required</td>
-			  <td>nothing required</td>
-			  <td>nothing required</td>
+			  <td>date_from</td>
+			  <td>Date</td>
+			  <td>Start Date (optional)</td>
+			</tr>
+			<tr>
+			  <td>date_to</td>
+			  <td>Date</td>
+			  <td>End Date(optional)</td>
 			</tr>
           </tbody>
         </table>
@@ -282,7 +287,8 @@ $requestData = [
         <pre><code>
 // Data to be sent
 $data = [
-    // nothing is required
+    "date_from" => "2024-01-01", // optional
+   "date_to" => "2024-05-31", // optional
 ];
         </code></pre>
       </div>
