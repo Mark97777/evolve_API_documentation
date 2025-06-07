@@ -181,10 +181,6 @@
               <td>string / int</td>
             </tr>
 			<tr>
-              <td>selfie_photo</td>
-              <td>string (media file)</td>
-            </tr>
-			<tr>
               <td>id_number</td>
               <td>string</td>
             </tr>
@@ -581,6 +577,82 @@ $kycData = [
 }
         </code></pre>
       </div>
+	  
+	  
+	  <!-- upload Selfie Endpoint -->
+    <div class="endpoint">
+      <div class="method post">POST</div>
+      <h3>?action=upload-selfie</h3>
+      <p>This endpoint is responsible for uploading a user's selfie for the KYC.
+	  <br /><b>Note:</b> It is very important to call this endpoint after the <b>submit-kyc endpoint.</b>
+	  <br /> user_id & selfie_photo are required.
+	  </p>
+	  
+	  <div class="parameters">
+        <h4>Request Data</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Type</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>user_id</td>
+              <td>string / int</td>
+            </tr>
+			<tr>
+              <td>selfie_photo</td>
+              <td>string (media file)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+<div style = "" class="response">
+        <h4>JSON Structure</h4>
+        <pre><code>
+Must be in forms with all the required input fields
+        </code></pre>
+      </div>
+    </div>
+
+      <div class="response">
+        <h4>Response</h4>
+        <pre><code>
+		SUCCESS RESPONSE
+{
+    "success": true,
+    "message": "Selfie photo uploaded successfully",
+    "path": "uploads/kyc/selfie_123_4f5d6e7g8h9i.jpg",
+    "user_id": 123
+}
+{
+    "success": false,
+    "error": "No file was uploaded."
+}
+
+
+}
+		ERROR RESPONSE
+{
+    "success": false,
+    "error": "No file was uploaded."
+}
+{
+    "success": false,
+    "error": "Only JPG, PNG, or WebP images are allowed for selfies."
+}
+{
+    "success": false,
+    "error": "File size exceeds maximum limit of 2MB."
+}
+
+        </code></pre>
+      </div>
+    </div>
+	
 	
 
   <div class="footer">
